@@ -1,29 +1,5 @@
-    def merge_arr(self, left, right):
-        merged = []
-        left_index = right_index = 0
+class Solution(object):
 
-        while left_index < len(left) and right_index < len(right):
-            if left[left_index] < right[right_index]:
-                merged.append(left[left_index])
-                left_index += 1
-            else:
-                merged.append(right[right_index])
-                right_index += 1
-
-        merged.extend(left[left_index:])
-        merged.extend(right[right_index:])
-
-        return merged
-
-    def merge_sort(self, arr):
-        if len(arr) <= 1:
-            return arr
-        
-        mid = len(arr) // 2
-        left_half = self.merge_sort(arr[:mid])
-        right_half = self.merge_sort(arr[mid:])
-
-        return self.merge_arr(left_half, right_half)
 
     def merge(self, nums1, m, nums2, n):
         """
@@ -33,6 +9,52 @@
         :type n: int
         :rtype: None Do not return anything, modify nums1 in-place instead.
         """
-        arr_to_sort = nums1[:m] + nums2[:n]
-        return self.merge_sort(arr_to_sort)
-    
+        
+        def ip_merge_sort(arr, start = 0, end=None):
+            if end is None:
+                end = len(arr)
+            
+            if end - start <= 1:
+                return
+            
+            mid = (start + end)//2
+            
+            ip_merge_sort(arr, start, mid)
+            ip_merge_sort(arr, mid, end)
+            
+            ip_merge(arr, start, mid, end)
+            
+        def ip_merge(arr, start, mid, end):
+            # Temporary copy of the segment to merge
+            left = arr[start:mid]
+            right = arr[mid:end]
+
+            i = j = 0
+            k = start
+
+            # Merge back into the original array
+            while i < len(left) and j < len(right):
+                if left[i] <= right[j]:
+                    arr[k] = left[i]
+                    i += 1
+                else:
+                    arr[k] = right[j]
+                    j += 1
+                k += 1
+
+            # Copy any remaining elements from left and right
+            while i < len(left):
+                arr[k] = left[i]
+                i += 1
+                k += 1
+
+            while j < len(right):
+                arr[k] = right[j]
+                j += 1
+                k += 1
+        
+        nums1[m:] = nums2[:n]
+        
+        ip_merge_sort(nums1)
+        
+        return 
