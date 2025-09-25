@@ -30,6 +30,8 @@ int** threeSum(int* nums, int numsSize, int* returnSize, int** returnColumnSizes
     int* columnSizes = (int*) calloc(numsSize * numsSize / 6, sizeof(int));
 
     if(!columnSizes){
+        free(returnValue);
+
         return NULL;
     }
 
