@@ -3,3 +3,4 @@ __pycache__/
 fidup
 fiunique
 56.merge-intervals
+20.valid-parentheses
